@@ -1,4 +1,12 @@
 #---------------------------------------------------------------------------------
+# Generic makefile for GP32 projects
+#
+# Tab stops set to 4
+#	|	|	|	|
+#	0	1	2	3
+#---------------------------------------------------------------------------------
+# Clear the implicit built in rules
+#---------------------------------------------------------------------------------
 .SUFFIXES:
 #---------------------------------------------------------------------------------
 
@@ -9,7 +17,7 @@ AUTHOR	:=	greg@torlus.com
 TITLE	:=	DemoGP32
 
 #---------------------------------------------------------------------------------
-# TARGET is the name of the output, if this ends with _mb generates a multiboot image
+# TARGET is the name of the output
 # BUILD is the directory where object files & intermediate files will be placed
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
@@ -48,11 +56,11 @@ LIBMIRKO	:=	/c/cvsrep/devkitpro/examples/gp32/DemoGP32/mirkoSDK091
 #---------------------------------------------------------------------------------
 # the prefix on the compiler executables
 #---------------------------------------------------------------------------------
-PREFIX			:=	arm-elf-
+PREFIX		:=	arm-elf-
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	-lmirkoSDK
+LIBS		:=	-lmirkoSDK
 
 
 #---------------------------------------------------------------------------------
@@ -77,17 +85,22 @@ export CC		:=	$(PREFIX)gcc
 export CXX		:=	$(PREFIX)g++
 export AR		:=	$(PREFIX)ar
 export OBJCOPY	:=	$(PREFIX)objcopy
-#---------------------------------------------------------------------------------
-# use CXX for linking C++ projects, CC for standard C
-#---------------------------------------------------------------------------------
-#export LD		:=	$(CXX)
-export LD		:=	$(CC)
+
 
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 BMPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.bmp)))
 BINFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.bin)))
+
+#---------------------------------------------------------------------------------
+# use CXX for linking C++ projects, CC for standard C
+#---------------------------------------------------------------------------------
+ifeq ($(strip $(CPPFILES)),)
+	export LD	:=	$(CC)
+else
+	export LD	:=	$(CXX)
+endif
 
 export OFILES	:=	$(BINFILES:.bin=.o) $(BMPFILES:.bmp=.o)\
 					$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
@@ -137,10 +150,8 @@ $(OUTPUT).elf	:	$(OFILES)
 
 #---------------------------------------------------------------------------------
 %.elf:
-	@echo linking cartridge
+	@echo linking binary
 	@$(LD)  $(LDFLAGS) -specs=gp32.specs $(OFILES) $(LIBPATHS) $(LIBS) -o $@
-
-
 
 #---------------------------------------------------------------------------------
 # Compile Targets for C/C++

@@ -51,7 +51,7 @@ export PATH		:=	/c/devkitARM_r11/bin:/bin:/c/bin
 # absolute path required since this makefile uses the build directory
 # as the working directory
 #---------------------------------------------------------------------------------
-LIBMIRKO	:=	/c/cvsrep/devkitpro/examples/gp32/DemoGP32/mirkoSDK091
+LIBMIRKO	:=	/c/projects/devkitpro/examples/gp32/DemoGP32/mirkoSDK091
 
 #---------------------------------------------------------------------------------
 # the prefix on the compiler executables

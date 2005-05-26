@@ -13,7 +13,7 @@ Include Sub Directories=0
 0=C:\projects\devkitPro\examples\gp32\DemoGP32\Makefile
 1=C:\projects\devkitPro\examples\gp32\DemoGP32\source\main.c
 [Open Files]
-Open File0=C:\projects\devkitPro\examples\gp32\DemoGP32\source\main.c
+Open File0=
 Open File Pos0=0
 Open File Line0=0
 Open File Window Pos0=0,1,-1,-1,-4,-23,44,44,912,413
@@ -27,7 +27,7 @@ Open File Line2=0
 Active File Index=2
 Open File Window Pos2=2,3,-1,-1,-4,-23,88,88,960,461
 Open File3=
-Active File Display Mode=3
+Active File Display Mode=-1
 [File View]
-Current Select=Project Files\Makefile
+Current Select=Project Files
 Scroll Position=0

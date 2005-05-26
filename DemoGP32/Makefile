@@ -1,14 +1,13 @@
 #---------------------------------------------------------------------------------
-# Generic makefile for GP32 projects
-#
-# Tab stops set to 4
-#	|	|	|	|
-#	0	1	2	3
-#---------------------------------------------------------------------------------
 # Clear the implicit built in rules
 #---------------------------------------------------------------------------------
 .SUFFIXES:
 #---------------------------------------------------------------------------------
+ifeq ($(strip $(DEVKITARM)),)
+$(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM)
+endif
+
+include $(DEVKITARM)/gp32_rules
 
 #---------------------------------------------------------------------------------
 # options for FXE
@@ -45,7 +44,7 @@ LDFLAGS	=	$(ARCH) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # path to tools - this can be deleted if you set the path in windows
 #---------------------------------------------------------------------------------
-export PATH		:=	/c/devkitARM_r11/bin:/bin:/c/bin
+export PATH		:=	$(DEVKITARM)/bin:$(PATH)
 
 #---------------------------------------------------------------------------------
 # absolute path required since this makefile uses the build directory
@@ -53,10 +52,6 @@ export PATH		:=	/c/devkitARM_r11/bin:/bin:/c/bin
 #---------------------------------------------------------------------------------
 LIBMIRKO	:=	/c/projects/devkitpro/examples/gp32/DemoGP32/mirkoSDK091
 
-#---------------------------------------------------------------------------------
-# the prefix on the compiler executables
-#---------------------------------------------------------------------------------
-PREFIX		:=	arm-elf-
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
@@ -80,11 +75,7 @@ ifneq ($(BUILD),$(notdir $(CURDIR)))
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir))
-
-export CC		:=	$(PREFIX)gcc
-export CXX		:=	$(PREFIX)g++
-export AR		:=	$(PREFIX)ar
-export OBJCOPY	:=	$(PREFIX)objcopy
+export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 
 
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
@@ -138,55 +129,6 @@ $(OUTPUT).bin	:	$(OUTPUT).elf
 
 $(OUTPUT).elf	:	$(OFILES)
 
-#---------------------------------------------------------------------------------
-%.fxe: %.bin
-	@echo built ... $(notdir $@)
-	@b2fxec -a "$(AUTHOR)" -t "$(TITLE)" $< $@
-
-#---------------------------------------------------------------------------------
-%.bin: %.elf
-	@echo built ... $(notdir $@)
-	@$(OBJCOPY) -O binary $< $@
-
-#---------------------------------------------------------------------------------
-%.elf:
-	@echo linking binary
-	@$(LD)  $(LDFLAGS) -specs=gp32.specs $(OFILES) $(LIBPATHS) $(LIBS) -o $@
-
-#---------------------------------------------------------------------------------
-# Compile Targets for C/C++
-#---------------------------------------------------------------------------------
-
-#---------------------------------------------------------------------------------
-%.o : %.cpp
-	@echo $(notdir $<)
-	@$(CXX) -MM $(CFLAGS) -o $*.d $<
-	@$(CXX)  $(CFLAGS) -c $< -o$@
-
-#---------------------------------------------------------------------------------
-%.o : %.c
-	@echo $(notdir $<)
-	@$(CC) -MM $(CFLAGS) -o $*.d $<
-	@$(CC)  $(CFLAGS) -c $< -o$@
-
-#---------------------------------------------------------------------------------
-%.o : %.s
-	@echo $(notdir $<)
-	@$(CC) -MM $(CFLAGS) -o $*.d $<
-	@$(CC)  $(ASFLAGS) -c $< -o$@
-
-define bin2o
-	cp $(<) $(*).tmp
-	$(OBJCOPY) -I binary -O elf32-littlearm -B arm \
-	--rename-section .data=.rodata,readonly,data,contents \
-	--redefine-sym _binary_$*_tmp_start=$*\
-	--redefine-sym _binary_$*_tmp_end=$*_end\
-	--redefine-sym _binary_$*_tmp_size=$*_size\
-	$(*).tmp $(@)
-	echo "extern const u8" $(*)"[];" > $(*).h
-	echo "extern const u32" $(*)_size[]";" >> $(*).h
-	rm $(*).tmp
-endef
 
 #---------------------------------------------------------------------------------
 %.o	:	%.bin

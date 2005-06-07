@@ -47,12 +47,6 @@ LDFLAGS	=	$(ARCH) -Wl,-Map,$(notdir $@).map
 export PATH		:=	$(DEVKITARM)/bin:$(PATH)
 
 #---------------------------------------------------------------------------------
-# absolute path required since this makefile uses the build directory
-# as the working directory
-#---------------------------------------------------------------------------------
-LIBMIRKO	:=	/c/projects/devkitpro/examples/gp32/DemoGP32/mirkoSDK091
-
-#---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
 LIBS		:=	-lmirkoSDK

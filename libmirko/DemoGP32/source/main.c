@@ -3,7 +3,7 @@
 
 #include <gp32.h>
 
-#include "spriteBall.h"
+#include "spriteBall_bin.h"
 
 #define BALLS 5
 typedef struct {
@@ -39,7 +39,7 @@ int main() {
 			ball->y += ball->dy;
 			if ( (ball->x < 0) || (ball->x > (320-64)) ) ball->dx = -ball->dx;
 			if ( (ball->y < 0) || (ball->y > (240-64)) ) ball->dy = -ball->dy;
-			gp_drawSpriteHTB((u16 *)spriteBall,ball->x,ball->y,frameBuffer,0xFFFE,24);
+			gp_drawSpriteHTB((u16 *)spriteBall_bin,ball->x,ball->y,frameBuffer,0xFFFE,24);
 		}
 		
 		gp_drawString(90,220,16,"Press A to reset",0x0000,frameBuffer);

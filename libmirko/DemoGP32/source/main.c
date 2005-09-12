@@ -1,6 +1,7 @@
 // Small GP32 demo by Torlus (http://torlus.com)
 // using WinterMute's DevkitARM and Mirko's SDK (http://www.mirkoroller.de/)
 
+#include <stdlib.h>
 #include <gp32.h>
 
 #include "spriteBall_bin.h"

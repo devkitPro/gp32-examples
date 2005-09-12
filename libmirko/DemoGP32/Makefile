@@ -117,9 +117,9 @@ DEPENDS	:=	$(OFILES:.o=.d)
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
-$(OUTPUT).fxe	:	$(OUTPUT).bin
+$(OUTPUT).fxe	:	$(OUTPUT).gxb
 
-$(OUTPUT).bin	:	$(OUTPUT).elf
+$(OUTPUT).gxb	:	$(OUTPUT).elf
 
 $(OUTPUT).elf	:	$(OFILES)
 

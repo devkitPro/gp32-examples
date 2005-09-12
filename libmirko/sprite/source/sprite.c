@@ -44,8 +44,9 @@ int main() {
     for (x=200;x<320;x+=4) gp_drawLine16 (319,239,x,  0,0xf800,framebuffer[swapper]);
     gp_drawSpriteH  ( (u16*)test_bin,100, 10, framebuffer[swapper]);
     gp_drawSpriteHT ( (u16*)garfield_bin, 90, 50, framebuffer[swapper], 0xFFFE );
-    gp_drawSpriteHTB( (u16*)odie_bin,   spritex, spritex++ , framebuffer[swapper], 0xFFFE,15);
+    gp_drawSpriteHTB( (u16*)odie_bin,   spritex, spritex , framebuffer[swapper], 0xFFFE,15);
 
+	spritex++;
 
 
   framerate++;

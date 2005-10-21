@@ -12,8 +12,8 @@ include $(DEVKITARM)/gp32_rules
 #---------------------------------------------------------------------------------
 # options for FXE
 #---------------------------------------------------------------------------------
-AUTHOR	:=	greg@torlus.com
-TITLE	:=	DemoGP32
+AUTHOR	:=	Torlus
+TITLE	:=	$(shell basename $(CURDIR))
 
 #---------------------------------------------------------------------------------
 # TARGET is the name of the output
@@ -21,9 +21,9 @@ TITLE	:=	DemoGP32
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
 #---------------------------------------------------------------------------------
-TARGET		:=	DemoGP32
+TARGET		:=	$(TITLE)
 BUILD		:=	build
-SOURCES		:=	source
+SOURCES		:=	source data
 INCLUDES	:=	include
 
 #---------------------------------------------------------------------------------
@@ -38,6 +38,8 @@ CFLAGS	:=	-Wall -O2 -mtune=arm9tdmi\
 
 CFLAGS	+=	$(INCLUDE)
 
+CXXFLAGS	:=	$(CFLAGS)
+
 AFLAGS	:=	$(ARCH)
 LDFLAGS	=	$(ARCH) -Wl,-Map,$(notdir $@).map
 
@@ -49,7 +51,7 @@ export PATH		:=	$(DEVKITARM)/bin:$(PATH)
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS		:=	-lmirkoSDK
+LIBS		:=	-lmirkoSDK -lm
 
 
 #---------------------------------------------------------------------------------
@@ -106,7 +108,7 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) *.elf
+	@rm -fr $(BUILD) *.elf *.gxb *.fxe
 
 
 #---------------------------------------------------------------------------------
@@ -122,8 +124,6 @@ $(OUTPUT).fxe	:	$(OUTPUT).gxb
 $(OUTPUT).gxb	:	$(OUTPUT).elf
 
 $(OUTPUT).elf	:	$(OFILES)
-
-
 #---------------------------------------------------------------------------------
 %.o	:	%.bin
 #---------------------------------------------------------------------------------
@@ -135,6 +135,7 @@ $(OUTPUT).elf	:	$(OFILES)
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	bmp2bin -x $< $@
+
 
 -include $(DEPENDS)
 

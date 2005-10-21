@@ -38,6 +38,8 @@ CFLAGS	:=	-Wall -O2 -mtune=arm9tdmi\
 
 CFLAGS	+=	$(INCLUDE)
 
+CXXFLAGS	:=	$(CFLAGS)
+
 AFLAGS	:=	$(ARCH)
 LDFLAGS	=	$(ARCH) -Wl,-Map,$(notdir $@).map
 

@@ -38,7 +38,7 @@ CFLAGS	:=	-Wall -O2 -mtune=arm9tdmi\
 
 CFLAGS	+=	$(INCLUDE)
 
-CXXFLAGS	:=	$(CFLAGS)
+CXXFLAGS	:=	$(CFLAGS) -fno-rtti -fno-exceptions
 
 AFLAGS	:=	$(ARCH)
 LDFLAGS	=	$(ARCH) -Wl,-Map,$(notdir $@).map
